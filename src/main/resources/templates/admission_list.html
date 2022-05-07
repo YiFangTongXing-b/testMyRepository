@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>分数线管理</title>
+    <link type="text/css" rel="stylesheet" media="all" href="styles/global.css"/>
+    <link type="text/css" rel="stylesheet" media="all" href="styles/global_color.css"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+
+</head>
+<body>
+<!--Logo区域开始-->
+<div id="header">
+    <img src="../images/logo.png" alt="logo" class="left"/>
+    <a href="/exit">[退出]</a>
+</div>
+<!--Logo区域结束-->
+<!--导航区域开始-->
+<div id="navi">
+    <ul id="menu">
+        <li><a href="/user_list" class="user_off"></a></li>
+        <li><a href="/school_list" class="admin_off"></a></li>
+        <li><a href="/admission_list" class="fee_on"></a></li>
+        <li><a href="/excel_user_insert" class="account_off"></a></li>
+        <li><a href="/excel_school_insert" class="service_off"></a></li>
+        <li><a href="/excel_admission_insert" class="bill_off"></a></li>
+    </ul>
+</div>
+<!--导航区域结束-->
+<!--主要区域开始-->
+<div id="main">
+    <!--添加学校-->
+
+    <div class="search_add" style="float: right" >
+        <div style="float: right">
+            <form class="form_1" method="post" id="form_1" style="overflow-x:hidden;overflow-y:auto;">
+                <div class="input_1">
+                    <div class="input_logo" id="input_logo"></div>
+                    <div class="close">X</div>
+                </div>
+                <hr>
+                <input type="hidden" name="admission_id" id="updateAdmissionId">
+                <div class="input_1">
+                    <input type="text" name="school_name" placeholder="&nbsp;学校名">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="province_name" placeholder="&nbsp;省份名">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="year" placeholder="&nbsp;年份">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="major" placeholder="&nbsp;专业">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="kind" placeholder="&nbsp;文理">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="least_score" placeholder="&nbsp;最低分">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="high_score" placeholder="&nbsp;最高分">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="avg_score" placeholder="&nbsp;平均分">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="least_rank" placeholder="&nbsp;最低排名">
+                </div>
+                <div class="input_1">
+                    <input type="text" name="num" placeholder="&nbsp;录取人数">
+                </div>
+                <div class="input_1">
+                    <input type="submit" class="submit_1" value="提交">
+                </div>
+            </form>
+            <input type="button" value="增加" class="btn_add insertBtn"/>
+        </div>
+        <div style="float: left">
+            <form class="form_2" action="admission_list">
+                <th>学校:</th>
+                <th><input type="text" name="school_name" style="width: 100px"></th>
+                <th>省份：</th>
+                <th><input type="text" name="province_name" style="width: 100px"></th>
+                <th>年份:</th>
+                <th><input type="text" name="year" style="width: 40px"></th>
+                <th>专业：</th>
+                <th><input type="text" name="major" style="width: 100px"></th>
+                <th>文理：</th>
+                <th><input type="text" name="kind" style="width: 40px"></th>
+                <th>
+                    <input type="submit" value="查询" class="btn_add"/>
+                </th>
+            </form>
+
+        </div>
+    </div>
+
+    <!--数据区域：用表格展示数据-->
+    <div id="data">
+        <table id="datalist">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>学校</th>
+                <th>省份</th>
+                <th>年份</th>
+                <th>专业</th>
+                <th>文理</th>
+                <th>最低分</th>
+                <th>最高分</th>
+                <th>平均分</th>
+                <th>最低排名</th>
+                <th>录取人数</th>
+                <th class="td_modi">操作</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <tr th:each="admission,star:${admissionList.list}">
+                <td th:text="(${admissionList.pageNum}-1)*(${admissionList.pageSize})+${star.index}+1"></td>
+                <td th:text="${admission.school_name}"></td>
+                <td th:text="${admission.province_name}"></td>
+                <td th:text="${admission.year}"></td>
+                <td th:text="${admission.major}"></td>
+                <td th:text="${admission.kind}"></td>
+                <td th:text="${admission.least_score}"></td>
+                <td th:text="${admission.high_score}"></td>
+                <td th:text="${admission.avg_score}"></td>
+                <td th:text="${admission.least_rank}"></td>
+                <td th:text="${admission.num}"></td>
+                <td>
+                    <input type="submit" th:attr="del_uri=@{/admission_delete},admission_id=${admission.admission_id}" value="删除"
+                           class="btn_delete"/>
+                    <input type="button" th:attr="upd_uri=@{/admission_update},admission_id=${admission.admission_id}" value="修改"
+                           class="btn_modify"/>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--分页-->
+    <div id="pages">
+        <div style="float:left">
+            <a th:href="'?pageNum=1'+'&school_name='+${school_name}+'&province_name='+${province_name}+'&year='+${year}+'&major='+${major}+'&kind='+${kind}">首页</a>
+            <a th:if="${admissionList.hasPreviousPage}" th:href="'?pageNum='+${admissionList.prePage}+'&school_name='+${school_name}+'&province_name='+${province_name}+'&year='+${year}+'&major='+${major}+'&kind='+${kind}">上一页</a>
+            <a th:if="${admissionList.hasNextPage}" th:href="'?pageNum='+${admissionList.nextPage}+'&school_name='+${school_name}+'&province_name='+${province_name}+'&year='+${year}+'&major='+${major}+'&kind='+${kind}">下一页</a>
+            <a th:href="'?pageNum='+${admissionList.pages}+'&school_name='+${school_name}+'&province_name='+${province_name}+'&year='+${year}+'&major='+${major}+'&kind='+${kind}">尾页</a>
+        </div>
+        <div style="float:right">
+            <form action="/admission_list" method="post">
+                <input type="text" name="pageNum" style="width: 50px;height: 20px"
+                       oninput="value=value.replace(/[^\d]/g,'')">
+                <input type="hidden" th:value="${school_name}" name="school_name">
+                <input type="hidden" th:value="${province_name}" name="province_name">
+                <input type="hidden" th:value="${year}" name="year">
+                <input type="hidden" th:value="${major}" name="major">
+                <input type="hidden" th:value="${kind}" name="kind">
+                <button type="submit">跳转</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!--主要区域结束-->
+
+<form id="deleteForm" method="post" style="float: end">
+    <input id="deleteAdmissionId" type="hidden" name="admission_id"/>
+</form>
+<script>
+    $(".btn_delete").click(function () {
+        $("#deleteAdmissionId").attr("value", $(this).attr("admission_id"));
+        $("#deleteForm").attr("action", $(this).attr("del_uri")).submit();
+    })
+</script>
+
+<script>
+    var form_1 = document.getElementsByClassName("form_1");
+    $(".insertBtn").click(function () {
+        $("#input_logo").html("添加分数线");
+        $("#form_1").attr("action", "admission_insert");
+        form_1[0].className = "form_1 open";
+    })
+    $(".btn_modify").click(function () {
+        $("#input_logo").html("修改分数线");
+        $("#form_1").attr("action", "admission_update");
+        $("#updateAdmissionId").attr("value", $(this).attr("admission_id"));
+        form_1[0].className = "form_1 open";
+    })
+    $(".close").click(function () {
+        form_1[0].className = "form_1";
+    })
+</script>
+
+<script th:if="${msg}!=null" th:inline="javascript">
+    var msg = [[${msg}]];
+    alert(msg);
+</script>
+
+</body>
+</html>

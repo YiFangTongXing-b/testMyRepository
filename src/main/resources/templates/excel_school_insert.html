@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>学校上传</title>
+    <link type="text/css" rel="stylesheet" media="all" href="styles/global.css"/>
+    <link type="text/css" rel="stylesheet" media="all" href="styles/global_color.css"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+
+</head>
+<body>
+<div id="header">
+    <img src="../images/logo.png" alt="logo" class="left"/>
+    <a href="/exit">[退出]</a>
+</div>
+<!--Logo区域结束-->
+<!--导航区域开始-->
+<div id="navi">
+    <ul id="menu">
+        <li><a href="/user_list" class="user_off"></a></li>
+        <li><a href="/school_list" class="admin_off"></a></li>
+        <li><a href="/admission_list" class="fee_off"></a></li>
+        <li><a href="/excel_user_insert" class="account_off"></a></li>
+        <li><a href="/excel_school_insert" class="service_on"></a></li>
+        <li><a href="/excel_admission_insert" class="bill_off"></a></li>
+    </ul>
+</div>
+<!--导航区域结束-->
+<!--主要区域开始-->
+<div id="main">
+    <!--添加用户-->
+    <div style="width:100%;text-align:center">
+        <form action="upload_school" method="post" enctype="multipart/form-data">
+            <p>文件上传</p>
+            <input type="file" name="file">
+            <p><input type="submit" value="提交"></p>
+        </form>
+    </div>
+</div>
+<!--主要区域结束-->
+<script th:if="${msg}!=null" th:inline="javascript">
+    var msg = [[${msg}]];
+    alert(msg);
+</script>
+</body>
+</html>
